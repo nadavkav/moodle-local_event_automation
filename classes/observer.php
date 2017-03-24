@@ -26,21 +26,25 @@
 namespace local_event_automation;
 defined('MOODLE_INTERNAL') || die();
 
+//require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+
 class observer {
 
     public static function record_updated(\mod_data\event\record_updated $event) {
+        //error_log('class::local_event_automation_database_observer');
+        //print_object($event);
 
-        global $DB;
+        global $DB, $CFG;
         $admin_user = get_admin();
-        $to_testuser = $DB->get_record('user', array('id' => 7)); 
-        $to_user_noga = \core_user::get_user(12345, '*', MUST_EXIST); 
-        $to_user_liron = \core_user::get_user(123456, '*', MUST_EXIST); 
-        $to_user_orel = \core_user::get_user(12345567, '*', MUST_EXIST); 
-        $to_user_shuli = \core_user::get_user(123, '*', MUST_EXIST); 
-        $to_user_moodle = \core_user::get_user(321, '*', MUST_EXIST); 
+        $to_testuser = $DB->get_record('user', array('id' => 777)); 
+        $to_user_noga = \core_user::get_user(111, '*', MUST_EXIST); 
+        $to_user_liron = \core_user::get_user(222, '*', MUST_EXIST);
+        $to_user_orel = \core_user::get_user(333, '*', MUST_EXIST); 
+        $to_user_shuli = \core_user::get_user(444, '*', MUST_EXIST);
+        $to_user_moodle = \core_user::get_user(555, '*', MUST_EXIST);
 
-        if ($event->contextinstanceid == 19170) { 
-            $data_field_id = 409; 
+        if ($event->contextinstanceid == 19222) { 
+            $data_field_id = 222; 
             $sql = "SELECT dc.content
                 FROM mdl_data_content AS dc
                 JOIN mdl_data_fields AS df ON df.id = dc.fieldid
@@ -50,7 +54,8 @@ class observer {
 
             $subject = 'טופס בקשת קורס - סטטוס השתנה = ' . $workflow_status->content;
             $message = '';
-
+            //$message = ' Current workflow status = '.(string)$this->objectid;
+            //print_object($event);die;
             switch ($workflow_status->content) {
                 case 'נוצרה בקשה לפתיחת השתלמות':
                     $to_user = $to_user_noga;
@@ -59,7 +64,7 @@ class observer {
                     $message .= "סטטוס הטופס הנוכחי הוא: " . $workflow_status->content;
                     $message .= "יש לבצע בו עדכון XXX";
                     $message .= "יש להקליק על הקישור הבא, לצפיה בטופס הרישום";
-                    $message .= "<a href='http://pegasus1.weizmann.ac.il/moodle2/mod/data/view.php?d=" .
+                    $message .= "<a href='$CFG->wwwroot/mod/data/view.php?d=" .
                         $event->other['dataid'] . "&mode=single'>טופס הרישום</a>";
                     break;
                 case 'עודכן קוד השתלמות':
@@ -69,7 +74,7 @@ class observer {
                     $message .= "סטטוס הטופס הנוכחי הוא: " . $workflow_status->content;
                     $message .= "יש לבצע בו עדכון XXX";
                     $message .= "יש להקליק על הקישור הבא, לצפיה בטופס הרישום";
-                    $message .= "<a href='http://pegasus1.weizmann.ac.il/moodle2/mod/data/view.php?d=" .
+                    $message .= "<a href='$CFG->wwwroot/mod/data/view.php?d=" .
                         $event->other['dataid'] . "&mode=single'>טופס הרישום</a>";
                     break;
                 case 'עודכן קוד הקורס':
@@ -79,7 +84,7 @@ class observer {
                     $message .= "סטטוס הטופס הנוכחי הוא: " . $workflow_status->content;
                     $message .= "יש לבצע בו עדכון XXX";
                     $message .= "יש להקליק על הקישור הבא, לצפיה בטופס הרישום";
-                    $message .= "<a href='http://pegasus1.weizmann.ac.il/moodle2/mod/data/view.php?d=" .
+                    $message .= "<a href='$CFG->wwwroot/mod/data/view.php?d=" .
                         $event->other['dataid'] . "&mode=single'>טופס הרישום</a>";
                     break;
                 case 'נפתח קורס במוודל':
@@ -89,7 +94,7 @@ class observer {
                     $message .= "סטטוס הטופס הנוכחי הוא: " . $workflow_status->content;
                     $message .= "יש לבצע בו עדכון XXX";
                     $message .= "יש להקליק על הקישור הבא, לצפיה בטופס הרישום";
-                    $message .= "<a href='http://pegasus1.weizmann.ac.il/moodle2/mod/data/view.php?d=" .
+                    $message .= "<a href='$CFG->wwwroot/mod/data/view.php?d=" .
                         $event->other['dataid'] . "&mode=single'>טופס הרישום</a>";
                     break;
                 case 'עודכן קישור לטופס':
@@ -99,7 +104,7 @@ class observer {
                     $message .= "סטטוס הטופס הנוכחי הוא: " . $workflow_status->content;
                     $message .= "יש לבצע בו עדכון XXX";
                     $message .= "יש להקליק על הקישור הבא, לצפיה בטופס הרישום";
-                    $message .= "<a href='http://pegasus1.weizmann.ac.il/moodle2/mod/data/view.php?d=" .
+                    $message .= "<a href='$CFG->wwwroot/mod/data/view.php?d=" .
                         $event->other['dataid'] . "&mode=single'>טופס הרישום</a>";
                     break;
             }
